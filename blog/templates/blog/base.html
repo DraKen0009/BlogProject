@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body class="">
+<nav class="container flex justify-around py-8 mx-auto bg-sky-200 sticky top-0">
+  <div class="flex items-center">
+    <h3 class="text-2xl font-medium text-blue-500">LOGO</h3>
+  </div>
+  <!-- left header section -->
+  <div class="items-center hidden space-x-8 lg:flex">
+    <a href="{% url 'blog-home' %}">Home</a>
+    <a href="{% url 'blog-about' %}">About Us</a>
+    {% if user.is_authenticated %}
+            <a href="{% url 'user_posts' user.username %}">My Posts</a>
+    {% endif %}
+  </div>
+  <!-- right header section -->
+  <div class="flex items-center space-x-4 ">
+  <a href={% url 'post_create' %}>New Post</a>
+      {% if not user.is_authenticated %}
+      <a href="{% url 'register' %}" class="mx-4">Register</a>
+      <a href="{% url 'login' %}">Login</a>
+      {% else %}
+      <a href="{% url 'profile' %}" class="mx-4">Profile</a>
+      <a href="{% url 'logout' %}">Logout</a>
+      {% endif %}
+
+  </div>
+</nav>
+
+<main>
+{% if messages %}
+    {% for message in messages %}
+        <div class="bg-{{ message.tags }}-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline">{{ message }}</span>
+        </div>
+    {% endfor %}
+
+{% endif %}
+    {% block content %}{% endblock content %}
+</main>
+</body>
+</html>
